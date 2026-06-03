@@ -24,7 +24,18 @@ export class AttendanceService {
     createData: CreateAttendanceRequestDto,
   ): Promise<AttendanceResponseDto> {
     const attendance = this.attendanceRepository.create({ ...createData });
-    return await this.attendanceRepository.save(attendance);
+    try {
+      return await this.attendanceRepository.save(attendance);
+    } catch (error) {
+      this.logger.error(
+        `${error.constructor.name}: Failed to create attendance record - ${error.message}`,
+        error.stack,
+      );
+      throw new RpcException({
+        message: `Failed to create attendance record`,
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
   }
 
   async findAll(query: PaginationQueryDto): Promise<AttendanceListResponseDto> {
@@ -49,7 +60,7 @@ export class AttendanceService {
 
     if (!attendance) {
       throw new RpcException({
-        message: `Instructor with ID ${id} not found`,
+        message: `Attendance with ID ${id} not found`,
         code: HttpStatus.NOT_FOUND,
       });
     }
