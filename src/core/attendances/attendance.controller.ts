@@ -1,23 +1,27 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateAttendanceRequestDto,
   PaginationQueryDto,
-  UpdateAttendanceRequestDto,
+  UpdateAttendanceDto,
 } from '@dad-group-1/backend-common';
 
 @Controller('attendances')
 export class AttendanceController {
+  private readonly logger = new Logger(AttendanceController.name);
   constructor(private readonly attendanceService: AttendanceService) {}
 
   @MessagePattern({ cmd: 'create_attendance' })
   async create(@Payload() data: CreateAttendanceRequestDto) {
+    this.logger.log(
+      `Received create attendance request: ${JSON.stringify(data)}`,
+    );
     return this.attendanceService.create(data);
   }
 
   @MessagePattern({ cmd: 'find_all_attendances' })
-  findAll(@Payload() query: PaginationQueryDto) {
+  findAll(query: PaginationQueryDto) {
     return this.attendanceService.findAll(query);
   }
 
@@ -31,7 +35,7 @@ export class AttendanceController {
     @Payload()
     payload: {
       id: number;
-      updateData: UpdateAttendanceRequestDto;
+      updateData: UpdateAttendanceDto;
     },
   ) {
     return this.attendanceService.update(payload.id, payload.updateData);
