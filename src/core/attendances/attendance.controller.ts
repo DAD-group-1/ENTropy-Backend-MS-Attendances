@@ -2,42 +2,43 @@ import { Controller } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
-  CreateInstructorDto,
-  UpdateInstructorDto,
+  CreateAttendanceRequestDto,
+  PaginationQueryDto,
+  UpdateAttendanceRequestDto,
 } from '@dad-group-1/backend-common';
 
-@Controller('instructors')
+@Controller('attendances')
 export class AttendanceController {
-  constructor(private readonly instructorService: AttendanceService) {}
+  constructor(private readonly attendanceService: AttendanceService) {}
 
-  @MessagePattern({ cmd: 'create_instructor' })
-  async create(@Payload() data: CreateInstructorDto) {
-    return this.instructorService.create(data);
+  @MessagePattern({ cmd: 'create_attendance' })
+  async create(@Payload() data: CreateAttendanceRequestDto) {
+    return this.attendanceService.create(data);
   }
 
-  @MessagePattern({ cmd: 'find_all_instructors' })
-  findAll() {
-    return this.instructorService.findAll();
+  @MessagePattern({ cmd: 'find_all_attendances' })
+  findAll(@Payload() query: PaginationQueryDto) {
+    return this.attendanceService.findAll(query);
   }
 
-  @MessagePattern({ cmd: 'find_one_instructor' })
+  @MessagePattern({ cmd: 'find_one_attendance' })
   findOne(@Payload() id: number) {
-    return this.instructorService.findOne(id);
+    return this.attendanceService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'update_instructor' })
+  @MessagePattern({ cmd: 'update_attendance' })
   update(
     @Payload()
     payload: {
       id: number;
-      updateData: UpdateInstructorDto;
+      updateData: UpdateAttendanceRequestDto;
     },
   ) {
-    return this.instructorService.update(payload.id, payload.updateData);
+    return this.attendanceService.update(payload.id, payload.updateData);
   }
 
-  @MessagePattern({ cmd: 'remove_instructor' })
+  @MessagePattern({ cmd: 'remove_attendance' })
   remove(@Payload() id: number) {
-    return this.instructorService.remove(id);
+    return this.attendanceService.remove(id);
   }
 }

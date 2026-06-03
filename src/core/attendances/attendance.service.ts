@@ -23,13 +23,13 @@ export class AttendanceService {
   async create(
     createData: CreateAttendanceRequestDto,
   ): Promise<AttendanceResponseDto> {
-    const attendance = this.attendanceRepository.create(createData);
+    const attendance = this.attendanceRepository.create({ ...createData });
     return await this.attendanceRepository.save(attendance);
   }
 
   async findAll(query: PaginationQueryDto): Promise<AttendanceListResponseDto> {
     const { page, limit } = query;
-    const skip = (page! - 1) * limit!;
+    const skip = (page - 1) * limit;
 
     const [data, total] = await this.attendanceRepository.findAndCount({
       relations: { student: true },
@@ -38,7 +38,7 @@ export class AttendanceService {
       order: { id: 'DESC' },
     });
 
-    return new AttendanceListResponseDto(data, total, page!, limit!);
+    return new AttendanceListResponseDto(data, total, page, limit);
   }
 
   async findOne(id: number): Promise<AttendanceResponseDto | null> {
