@@ -14,9 +14,6 @@ export class AttendanceController {
 
   @MessagePattern({ cmd: 'create_attendance' })
   async create(@Payload() data: CreateAttendanceRequestDto) {
-    this.logger.log(
-      `Received create attendance request: ${JSON.stringify(data)}`,
-    );
     return this.attendanceService.create(data);
   }
 
