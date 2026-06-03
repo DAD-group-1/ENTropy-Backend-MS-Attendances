@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
-import { StudentModule } from './core/students/student.module';
-import { InstructorModule } from './core/instructors/instructor.module';
-import { AuthenticationModule } from './core/authentication/authentication.module';
-import { AuthorizationModule } from './core/authorization/authorization.module';
+import { AttendanceModule } from './core/attendances/attendance.module';
 
 @Module({
   imports: [
@@ -13,10 +10,7 @@ import { AuthorizationModule } from './core/authorization/authorization.module';
       envFilePath: ['.env'],
     }),
     DatabaseModule,
-    StudentModule,
-    InstructorModule,
-    AuthenticationModule,
-    AuthorizationModule,
+    AttendanceModule,
   ],
 })
 export class AppModule {}
