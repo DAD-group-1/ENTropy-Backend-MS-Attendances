@@ -4,7 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateAttendanceRequestDto,
   PaginationQueryDto,
-  UpdateAttendanceDto,
+  UpdateAttendanceRequestDto,
 } from '@dad-group-1/backend-common';
 
 @Controller('attendances')
@@ -32,7 +32,7 @@ export class AttendanceController {
     @Payload()
     payload: {
       id: number;
-      updateData: UpdateAttendanceDto;
+      updateData: UpdateAttendanceRequestDto;
     },
   ) {
     return this.attendanceService.update(payload.id, payload.updateData);
