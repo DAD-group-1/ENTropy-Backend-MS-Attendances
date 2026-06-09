@@ -68,6 +68,21 @@ export class AttendanceService {
     return attendance;
   }
 
+  async findByStudent(studentId: number, query: PaginationQueryDto) {
+    const { page, limit } = query;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await this.attendanceRepository.findAndCount({
+      where: { student: { user_id: studentId } },
+      relations: { student: true, schedule: true },
+      skip,
+      take: limit,
+      order: { id: 'DESC' },
+    });
+
+    return new AttendanceListResponseDto(data, total, page, limit);
+  }
+
   async update(
     id: number,
     updateData: UpdateAttendanceRequestDto,

@@ -4,7 +4,8 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateAttendanceRequestDto,
   PaginationQueryDto,
-  UpdateAttendanceDto,
+  SearchPaginationQueryDto,
+  UpdateAttendanceRequestDto,
 } from '@dad-group-1/backend-common';
 
 @Controller('attendances')
@@ -27,12 +28,20 @@ export class AttendanceController {
     return this.attendanceService.findOne(id);
   }
 
+  @MessagePattern({ cmd: 'find_attendances_by_student' })
+  findByStudentId(
+    @Payload()
+    payload: SearchPaginationQueryDto,
+  ) {
+    return this.attendanceService.findByStudent(payload.id, payload.query);
+  }
+
   @MessagePattern({ cmd: 'update_attendance' })
   update(
     @Payload()
     payload: {
       id: number;
-      updateData: UpdateAttendanceDto;
+      updateData: UpdateAttendanceRequestDto;
     },
   ) {
     return this.attendanceService.update(payload.id, payload.updateData);
