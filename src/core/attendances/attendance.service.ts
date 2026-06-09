@@ -43,7 +43,10 @@ export class AttendanceService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.attendanceRepository.findAndCount({
-      relations: { user: true },
+      relations: {
+        user: { campus: true, role: true },
+        schedule: { course: true },
+      },
       skip,
       take: limit,
       order: { id: 'DESC' },
