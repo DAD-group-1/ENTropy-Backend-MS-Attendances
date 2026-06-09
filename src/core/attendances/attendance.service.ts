@@ -43,7 +43,7 @@ export class AttendanceService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.attendanceRepository.findAndCount({
-      relations: { student: true },
+      relations: { user: true },
       skip,
       take: limit,
       order: { id: 'DESC' },
@@ -55,7 +55,7 @@ export class AttendanceService {
   async findOne(id: number): Promise<AttendanceResponseDto | null> {
     const attendance = await this.attendanceRepository.findOne({
       where: { id: id },
-      relations: { student: true, schedule: true },
+      relations: { user: { campus: true, role: true }, schedule: true },
     });
 
     if (!attendance) {
@@ -73,8 +73,8 @@ export class AttendanceService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.attendanceRepository.findAndCount({
-      where: { student: { user_id: studentId } },
-      relations: { student: true, schedule: true },
+      where: { user: { id: studentId } },
+      relations: { user: { campus: true, role: true }, schedule: true },
       skip,
       take: limit,
       order: { id: 'DESC' },

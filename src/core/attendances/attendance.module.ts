@@ -7,10 +7,20 @@ import { Schedule } from '../external/entities/schedule.entity';
 import { Student } from '../external/entities/student.entity';
 import { Course } from '../external/entities/course.entity';
 import { User } from '../external/entities/user.entity';
+import { Campus } from '../external/entities/campus.entity';
+import { Role } from '../external/entities/role.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Attendance, Course, Schedule, Student, User]),
+    TypeOrmModule.forFeature([
+      Attendance,
+      Course,
+      Schedule,
+      Student,
+      User,
+      Campus,
+      Role,
+    ]),
   ],
   providers: [AttendanceService],
   controllers: [AttendanceController],
