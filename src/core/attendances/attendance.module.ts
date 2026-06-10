@@ -9,6 +9,11 @@ import { Course } from '../external/entities/course.entity';
 import { User } from '../external/entities/user.entity';
 import { Campus } from '../external/entities/campus.entity';
 import { Role } from '../external/entities/role.entity';
+import { Department } from '../external/entities/department.entity';
+import { Room } from '../external/entities/room.entity';
+import { Instructor } from '../external/entities/instructor.entity';
+import { Specialization } from '../external/entities/specialization.entity';
+import { RoomType } from '../external/entities/room-type.entity';
 
 @Module({
   imports: [
@@ -20,6 +25,11 @@ import { Role } from '../external/entities/role.entity';
       User,
       Campus,
       Role,
+      Department,
+      Room,
+      Instructor,
+      Specialization,
+      RoomType,
     ]),
   ],
   providers: [AttendanceService],
